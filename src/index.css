@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=BenchNine:wght@300;400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0c0c0c;
+}
+
+.show-1 {
+  animation-delay: .15s;
+}
+
+.show-2 {
+  animation-delay: .3s;
+}
+
+.show-3 {
+  animation-delay: .5s;
+}
+
+.show-1,
+.show-2,
+.show-3{
+  animation-name: show;
+  animation-duration: .75s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    transform: scale(.5);
+  }
+  25% {
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+button[disabled] {
+  @apply text-gray-300 border-gray-300 shadow-none;
+}
+
+.plz-field {
+  @apply mt-8 mb-8 flex flex-col;
+}
+
+.plz-field label {
+  @apply block;
+}
+
+.plz-field label + input[type='text'] {
+  @apply block border border-black rounded p-6;
+}
+
+.checkbox-group {
+  @apply mb-4 inline-flex items-center;
+}
+
+.radio-input {
+  @apply mb-4 flex items-center;
+}
+
+.radio-input input[type='radio'] {
+  @apply mr-2;
+}
+
+.checkbox-control, .radio-control {
+  @apply h-8 w-8;
+}
+
+#postcode {
+  @apply h-16 w-48 pl-4 border rounded;
+}
+
+
+.checkbox-group input[type='checkbox'][disabled] + label {
+  @apply text-gray-300 text-2xl;
+}
+
+.checkbox-group input[type='checkbox'] {
+  @apply mr-2;
+}
+
