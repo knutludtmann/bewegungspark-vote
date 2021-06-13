@@ -29,12 +29,11 @@
         <p class="text-lg">Initiative für mehr Bewegung in Nordkirchen.</p>
       </div>
 
-
     </section>
 
     <div class="text-white text-lg pb-6 text-center">
       <p class="font-bold uppercase">Verein für mehr Bewegung</p>
-      Bewegungspark-nordkrichen.de
+      www.bewegungspark-nordkirchen.de
     </div>
   </div>
 </template>

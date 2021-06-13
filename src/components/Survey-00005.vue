@@ -22,8 +22,10 @@
       <p>Wir werden weiter Stimmen sammeln und den Neubau der Bewegungsanlage vorantreiben. Auf Facebook werden wir
         Aktuelles posten.</p>
     </section>
-    <div class="text-white pb-6 text-center  mt-auto"><p class="font-bold">Verein für mehr Bewegung</p>
-      Bewegungspark-nordkrichen.de
+
+    <div class="text-white text-lg pb-6 text-center">
+      <p class="font-bold uppercase">Verein für mehr Bewegung</p>
+      www.bewegungspark-nordkirchen.de
     </div>
   </div>
 </template>
@@ -110,9 +112,7 @@ export default {
     }
   },
   mounted() {
-    if (this.getCookie('vote') === 'done') {
-      this.$router.push('/done')
-    }
+
   },
 }
 </script>
