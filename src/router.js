@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Intro from './components/Intro.vue'
 import Done from './components/Done.vue'
 import Survey01 from './components/Survey-01.vue'
+import Survey001 from './components/Survey-001.vue'
 import Survey02 from './components/Survey-02.vue'
 import Survey003 from './components/Survey-003.vue'
 import Survey0004 from './components/Survey-0004.vue'
@@ -23,9 +24,15 @@ export default createRouter({
       component: Done,
     },
     {
+      path: `/schritt-0`,
+      name: `schritt-0`,
+      component: Survey01,
+      meta: { transitionName: 'slide' },
+    },
+    {
       path: `/schritt-1`,
       name: `schritt-1`,
-      component: Survey01,
+      component: Survey001,
       meta: { transitionName: 'slide' },
     },
     {

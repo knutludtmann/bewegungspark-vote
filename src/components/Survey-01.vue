@@ -15,19 +15,19 @@
     <section class="p-8 m-3 bg-white rounded-lg">
       <h2 class="pb-2 text-2xl font-700 p2-8 font-bold">
         Womit willst Du im neuen Bewegungspark fahren / was willst du machen?</h2>
-      <div class="pb-6">Gib bitte mindestens eine Sportart an.</div>
+      <div class="pb-6">Du kannst mehrere auswählen.</div>
       <dynamic-form class="text-xl"
                     :form="form"
                     @change="valueChanged"/>
-      <div>
+      <div class="flex justify-between">
         <button
-          :disabled="isDisabled(formValues) < 1"
-          v-on:click="speichernUndWeiter(formValues)"
-          class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
+            :disabled="isDisabled(formValues) < 1"
+            v-on:click="speichernUndWeiter(formValues)"
+            class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
           <span class="text-2xl pl-1">Okay, weiter</span>
         </button>
         <button
-          class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
+            class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
           <router-link to="/">
             zurück
           </router-link>
@@ -37,8 +37,7 @@
 
 
     <div class="text-white text-lg pb-6 text-center">
-      <p class="font-bold uppercase">Verein für mehr Bewegung</p>
-      www.bewegungspark-nordkirchen.de
+      <p class="font-bold uppercase"><a target="_blank" href="https://bewegungspark-nordkirchen.de">bewegungspark-nordkirchen.de</a></p>
     </div>
   </div>
 </template>
@@ -48,10 +47,10 @@
 import {ArrowRightIcon, MenuIcon, XIcon} from '@heroicons/vue/outline'
 import {
   CheckboxField,
-  TextField
+  TextField,
 } from '@asigloo/vue-dynamic-forms';
 import {computed, reactive} from 'vue';
-import {mapMutations} from 'vuex'
+
 
 export default {
   components: {
@@ -82,6 +81,10 @@ export default {
         dirtbike: CheckboxField({
           label: 'Dirt Bike',
           name: 'dirtbike',
+        }),
+        parcours: CheckboxField({
+          label: 'Parcours',
+          name: 'parcours',
         }),
         fitness: CheckboxField({
           label: 'Fitness',
@@ -125,7 +128,7 @@ export default {
           vm.$store.commit('setSport', value);
         }
       });
-      this.$router.push('/schritt-02')
+      this.$router.push('/schritt-1')
     },
     isDisabled: function (values) {
       let a = [];
@@ -144,3 +147,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@import "../styles/custom-styles.scss";
+</style>

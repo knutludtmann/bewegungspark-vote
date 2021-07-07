@@ -16,16 +16,31 @@
     <section class="p-8 m-3 bg-white rounded-lg">
       <h2 class="pb-2 text-2xl font-700 font-bold">
         Du hast abgestimmt, vielen Dank für Deine Angaben.</h2>
-      <ul>
-        <li>{{getDetails()}}</li>
-      </ul>
-      <p>Wir werden weiter Stimmen sammeln und den Neubau der Bewegungsanlage vorantreiben. Auf Facebook werden wir
+      <p>Wir werden weiter Stimmen sammeln und den Neubau der Bewegungsanlage vorantreiben.
+        Auf Facebook, Twitter, Instagram werden wir
         Aktuelles posten.</p>
+      <nav class="border-t border-b md:border-none flex uppercase justify-center items-center mt-12 p-4 md:p-0">
+        <a href="https://www.facebook.com/Bewegungspark-Nordkirchen-109934927959785"
+           class="mx-4"
+           target="_blank">
+          <font-awesome-icon :icon="['fab', 'facebook']" size="2x"/>
+        </a>
+        <a href="https://twitter.com/INordkirchen"
+           target="_blank"
+           class="ml-6 mx-4">
+          <font-awesome-icon :icon="['fab', 'twitter']" size="2x"/>
+        </a>
+        <a href="https://twitter.com/INordkirchen"
+           target="_blank"
+           class="ml-6 mx-4">
+          <font-awesome-icon :icon="['fab', 'instagram']" size="2x"/>
+        </a>
+      </nav>
     </section>
 
+
     <div class="text-white text-lg pb-6 text-center">
-      <p class="font-bold uppercase">Verein für mehr Bewegung</p>
-      www.bewegungspark-nordkirchen.de
+      <p class="font-bold uppercase"><a target="_blank" href="https://bewegungspark-nordkirchen.de">bewegungspark-nordkirchen.de</a></p>
     </div>
   </div>
 </template>
@@ -34,11 +49,10 @@
 <script>
 import {ArrowRightIcon, MenuIcon, XIcon} from '@heroicons/vue/outline'
 import {
-  RadioField,
   TextField
 } from '@asigloo/vue-dynamic-forms';
 import {computed, reactive} from 'vue';
-
+import {db} from "../db";
 
 export default {
   components: {
@@ -48,14 +62,22 @@ export default {
     TextField,
     computed
   },
+  data() {
+    return {
+      _currentVote: {},
+    }
+  },
+  firestore: {
+    votes: db.collection('Votes'),
+  },
   setup() {
     let formValues = reactive({});
     const form = computed(() => ({
       id: 'Survey',
       fields: {
         postcode: TextField({
-            placeholder: 'Bspw. 59394'
-          }
+              placeholder: 'Bspw. 59394'
+            }
         ),
       },
     }));
@@ -70,7 +92,13 @@ export default {
       valueChanged
     };
   },
-
+  mounted() {
+    if (this.getCookie('vote') === 'done') {
+      this.$router.push('/done')
+    } else {
+      this.setDetails();
+    }
+  },
   methods: {
     getCookie: function (cname) {
       let name = cname + '=';
@@ -87,32 +115,51 @@ export default {
       }
       return '';
     },
-    speichernUndWeiter: function (values) {
-      let vm = this;
-      this.$store.commit('clearFrequency');
-      Object.keys(values).filter(function (value) {
-        if (values[value]) {
-          vm.$store.commit('setFrequency', values[value]);
-        }
-      });
-      this.$router.push('/schritt-00005')
-    },
-    isDisabled: function (values) {
-      let a = [];
-      Object.keys(values).filter(function (value) {
-        if (values[value]) {
-          a.push(value);
-        }
-      })
-      return a.length
-    },
-    getDetails: function () {
-      document.cookie = "vote=done; expires=Mon, 10 Feb 2022 12:00:00 UTC";
-      return `Deine Sportart: ${this.$store.state.sport} `;
-    }
-  },
-  mounted() {
 
-  },
+    getNow: function() {
+      const today = new Date();
+      const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      const dateTime = date + ' ' + time;
+      return dateTime;
+    },
+
+    setDetails: function () {
+      const currentVote = {
+        sport: [],
+        behindertengerecht: '',
+        skill: '',
+        frequency: '',
+        postcode: '',
+        timestamp:'',
+      }
+
+      for (const field in this.$store.state) {
+        currentVote.skill = this.$store.state['skill'];
+        currentVote.behindertengerecht = this.$store.state['behindertengerecht'];
+        currentVote.frequency = this.$store.state['frequency'];
+        currentVote.postcode = this.$store.state['postcode'];
+
+        if (field === 'sport') {
+          for (let i = 0; i <= this.$store.state['sport'].length; i++) {
+            if (typeof this.$store.state['sport'][i] === 'string' && typeof this.$store.state['sport'][i] !== undefined) {
+              currentVote.sport.push(this.$store.state['sport'][i]);
+            }
+          }
+        }
+      }
+      currentVote.timestamp =  this.getNow();
+      document.cookie = "vote=done; expires=Mon, 10 Feb 2022 12:00:00 UTC";
+
+      db.collection('Votes').add({
+        currentVote,
+      });
+    },
+
+  }
 }
 </script>
+
+<style lang="scss">
+@import "../styles/custom-styles.scss";
+</style>

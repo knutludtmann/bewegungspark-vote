@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -87,7 +89,16 @@ button[disabled] {
   @apply text-gray-300 text-2xl;
 }
 
-.checkbox-group input[type='checkbox'] {
-  @apply mr-2;
+.checkbox-group input[type='checkbox'],
+.radio-group input[type='radio'] {
+  @apply mr-2 border;
 }
 
+
+.form-error {
+  @apply text-red-900 font-bold text-sm;
+}
+
+#postcode.form-control--error {
+  @apply border-red-900 border-2;
+}

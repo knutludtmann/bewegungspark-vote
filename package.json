@@ -5,17 +5,22 @@
     "dev": "vite",
     "dev-host": "vite --host",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "serve-https": "serve dist"
   },
   "dependencies": {
     "@asigloo/vue-dynamic-forms": "^3.12.0",
     "@heroicons/vue": "^1.0.1",
     "@tailwindcss/custom-forms": "^0.2.1",
-    "firebase": "^8.6.5-202154162150",
+    "firebase": "^8.6.7",
     "vue": "^3.0.5",
     "vue-router": "^4.0.8",
     "vuefire": "^3.0.0-alpha.2",
-    "vuex": "^4.0.1"
+    "vuex": "^4.0.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/vue-fontawesome": "^3.0.0-4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.2",
@@ -27,6 +32,8 @@
     "tailwindcss": "^2.1.2",
     "tailwindcss-hyphens": "^0.1.0",
     "vite": "^2.3.3",
-    "vite-plugin-pwa": "^0.7.3"
+    "vite-plugin-pwa": "^0.7.3",
+    "workbox-precaching": "^6.1.5",
+    "typescript": "^4.2.4"
   }
 }

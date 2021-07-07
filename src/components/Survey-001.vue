@@ -1,4 +1,3 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
 <template>
   <div class="flex flex-col">
     <div class="max-w-7xl mx-auto p-2 text-xl bg-greenbright flex flex-row items-center justify-around w-full relative">
@@ -14,22 +13,22 @@
       </router-link>
     </div>
     <section class="p-8 m-3 bg-white rounded-lg">
-      <h2 class="pb-2 text-2xl font-700 font-bold">
-        Wie gut bist Du im Skaten, Scooter, BMX, Dirt Bike, Fitness?</h2>
-      <div class="pb-6">Gib an wie du Dich einschätzt.</div>
+      <h2 class="pb-2 text-2xl font-700 p2-8 font-bold">
+        Sollte der Bewegungspark Behindertengerecht sein oder teilweise Behindertengerecht sein?</h2>
+      <div class="pb-6">Bitte gib an wenn das für Dich in Frage kommen könnte.</div>
       <dynamic-form class="text-xl"
                     :form="form"
                     @change="valueChanged"/>
       <div class="flex justify-between">
         <button
-          :disabled="isDisabled(formValues) < 1"
-          v-on:click="speichernUndWeiter(formValues)"
-          class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
+            :disabled="isDisabled(formValues) < 1"
+            v-on:click="speichernUndWeiter(formValues)"
+            class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
           <span class="text-2xl pl-1">Okay, weiter</span>
         </button>
         <button
-          class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
-          <router-link to="/schritt-1">
+            class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
+          <router-link to="/">
             zurück
           </router-link>
         </button>
@@ -52,13 +51,11 @@ import {
 } from '@asigloo/vue-dynamic-forms';
 import {computed, reactive} from 'vue';
 
-
 export default {
   components: {
     MenuIcon,
     XIcon,
     ArrowRightIcon,
-    RadioField,
     TextField,
     computed
   },
@@ -67,31 +64,19 @@ export default {
     const form = computed(() => ({
       id: 'Survey',
       fields: {
-        skill: RadioField({
-          options:[
+        behindertengerecht: RadioField({
+          options: [
             {
-              key: 'anfaenger',
-              value: 'Anfänger'
+              key: 'ja',
+              value: 'Behindertengerecht',
             },
             {
-              key: 'bisher-nur-interessiert',
-              value: 'Bisher nur interessiert',
-            },
-            {
-              key: 'fortgeschritten',
-              value: 'Fortgeschritten',
-            },
-            {
-              key: 'sehr-fortgeschritten',
-              value: 'Sehr fortgeschritten'
-            },
-            {
-              key: 'professionell',
-              value: 'Professionell'
+              key: 'nein',
+              value: 'Nein, nicht nötig',
             }
           ]
-        }),
-      },
+        })
+      }
     }));
 
     function valueChanged(values) {
@@ -123,20 +108,17 @@ export default {
     },
     speichernUndWeiter: function (values) {
       let vm = this;
-      // console.log(this.$store.state.skill);
-      this.$store.commit('clearSkill');
-      // console.log(this.$store.state.skill);
+      this.$store.commit('clearBehindertengerecht');
       Object.keys(values).filter(function (value) {
         if (values[value]) {
-          vm.$store.commit('setSkill', values[value]);
+          vm.$store.commit('setBehindertengerecht', values[value]);
         }
       });
-      this.$router.push('/schritt-003') // -> /user/123
+      this.$router.push('/schritt-02')
     },
     isDisabled: function (values) {
       let a = [];
       Object.keys(values).filter(function (value) {
-       //  console.log(value,values[value])
         if (values[value]) {
           a.push(value);
         }

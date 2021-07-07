@@ -19,7 +19,7 @@
       <dynamic-form class="text-xl"
                     :form="form"
                     @change="valueChanged"/>
-      <div class="">
+      <div class="flex justify-between">
         <button
           :disabled="isDisabled(formValues) < 1"
           v-on:click="speichernUndWeiter(formValues)"
@@ -36,8 +36,7 @@
     </section>
 
     <div class="text-white text-lg pb-6 text-center">
-      <p class="font-bold uppercase">Verein für mehr Bewegung</p>
-      www.bewegungspark-nordkirchen.de
+      <p class="font-bold uppercase"><a target="_blank" href="https://bewegungspark-nordkirchen.de">bewegungspark-nordkirchen.de</a></p>
     </div>
   </div>
 </template>
@@ -60,6 +59,7 @@ export default {
     TextField,
     computed
   },
+
   setup() {
     let formValues = reactive({});
     const form = computed(() => ({
@@ -138,3 +138,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@import "../styles/custom-styles.scss";
+</style>

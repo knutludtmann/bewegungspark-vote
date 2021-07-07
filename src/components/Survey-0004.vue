@@ -20,15 +20,15 @@
       <dynamic-form class="text-xl"
                     :form="form"
                     @change="valueChanged"/>
-      <div class="">
+      <div class="flex justify-between">
         <button
-          :disabled="isDisabled(formValues) < 1"
-          v-on:click="speichernUndWeiter(formValues)"
-          class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
+            :disabled="disabled.status"
+            v-on:click="speichernUndWeiter(formValues)"
+            class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
           <span class="text-2xl pl-1">Okay, weiter</span>
         </button>
         <button
-          class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
+            class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
           <router-link to="/schritt-1">
             zurück
           </router-link>
@@ -36,20 +36,20 @@
       </div>
     </section>
 
-
     <div class="text-white text-lg pb-6 text-center">
-      <p class="font-bold uppercase">Verein für mehr Bewegung</p>
-      www.bewegungspark-nordkirchen.de
+      <p class="font-bold uppercase"><a target="_blank" href="https://bewegungspark-nordkirchen.de">bewegungspark-nordkirchen.de</a></p>
     </div>
   </div>
 </template>
 
 
-<script>
+<script lang="ts">
 import {ArrowRightIcon, MenuIcon, XIcon} from '@heroicons/vue/outline'
 import {
-  RadioField,
-  TextField
+  TextField,
+  FormValidator,
+  Validator,
+  pattern
 } from '@asigloo/vue-dynamic-forms';
 import {computed, reactive} from 'vue';
 
@@ -60,27 +60,48 @@ export default {
     XIcon,
     ArrowRightIcon,
     TextField,
-    computed
+    computed,
+  },
+  data() {
+    return {
+      disabled: true,
+    }
   },
   setup() {
+
     let formValues = reactive({});
+    let disabled = reactive({
+      status: true
+    });
+
+    const plzValidator: FormValidator = Validator({
+      validator: pattern(
+          '^[0-9]{5}$',
+      ),
+      text:
+          'Bitte gib Deine Postleitzahl an.',
+    });
+
     const form = computed(() => ({
       id: 'Survey',
+
       fields: {
         postcode: TextField({
-            placeholder: 'Bspw. 59394'
-          }
+              placeholder: 'Bspw. 59394',
+              validations: [plzValidator],
+            }
         ),
       },
     }));
 
     function valueChanged(values) {
-      Object.assign(formValues, values);
+      disabled.status = values.postcode.length !== 5;
     }
 
     return {
       formValues,
       form,
+      disabled,
       valueChanged
     };
   },
@@ -103,22 +124,13 @@ export default {
     },
     speichernUndWeiter: function (values) {
       let vm = this;
-      this.$store.commit('clearFrequency');
+      this.$store.commit('clearPostcode');
       Object.keys(values).filter(function (value) {
         if (values[value]) {
-          vm.$store.commit('setFrequency', values[value]);
+          vm.$store.commit('setPostcode', values[value]);
         }
       });
       this.$router.push('/schritt-00005')
-    },
-    isDisabled: function (values) {
-      let a = [];
-      Object.keys(values).filter(function (value) {
-        if (values[value]) {
-          a.push(value);
-        }
-      })
-      return a.length
     }
   },
   mounted() {
@@ -128,3 +140,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@import "../styles/custom-styles.scss";
+</style>
