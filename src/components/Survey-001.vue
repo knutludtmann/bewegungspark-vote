@@ -14,23 +14,23 @@
     </div>
     <section class="p-8 m-3 bg-white rounded-lg">
       <h2 class="pb-2 text-2xl font-700 p2-8 font-bold">
-        Sollte der Bewegungspark Behindertengerecht sein oder teilweise Behindertengerecht sein?</h2>
+        Sollte der Bewegungspark behindertengerecht sein oder teilweise behindertengerecht sein?</h2>
       <div class="pb-6">Bitte gib an wenn das für Dich in Frage kommen könnte.</div>
       <dynamic-form class="text-xl"
                     :form="form"
                     @change="valueChanged"/>
       <div class="flex justify-between">
         <button
+            class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
+          <router-link to="/schritt-0">
+            zurück
+          </router-link>
+        </button>
+        <button
             :disabled="isDisabled(formValues) < 1"
             v-on:click="speichernUndWeiter(formValues)"
             class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
           <span class="text-2xl pl-1">Okay, weiter</span>
-        </button>
-        <button
-            class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
-          <router-link to="/">
-            zurück
-          </router-link>
         </button>
       </div>
     </section>
@@ -127,6 +127,8 @@ export default {
     }
   },
   mounted() {
+    window.scrollTo(0,0);
+
     if (this.getCookie('vote') === 'done') {
       this.$router.push('/done')
     }

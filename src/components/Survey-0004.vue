@@ -22,16 +22,16 @@
                     @change="valueChanged"/>
       <div class="flex justify-between">
         <button
-            :disabled="disabled.status"
-            v-on:click="speichernUndWeiter(formValues)"
-            class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
-          <span class="text-2xl pl-1">Okay, weiter</span>
-        </button>
-        <button
             class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
           <router-link to="/schritt-1">
             zurück
           </router-link>
+        </button>
+        <button
+            :disabled="disabled.status"
+            v-on:click="speichernUndWeiter(formValues)"
+            class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
+          <span class="text-2xl pl-1">Okay, weiter</span>
         </button>
       </div>
     </section>
@@ -96,6 +96,9 @@ export default {
 
     function valueChanged(values) {
       disabled.status = values.postcode.length !== 5;
+      if(values.postcode.length === 5){
+        Object.assign(formValues, values);
+      }
     }
 
     return {
@@ -127,6 +130,7 @@ export default {
       this.$store.commit('clearPostcode');
       Object.keys(values).filter(function (value) {
         if (values[value]) {
+          //console.log(values, values[value])
           vm.$store.commit('setPostcode', values[value]);
         }
       });

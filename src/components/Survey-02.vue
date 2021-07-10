@@ -22,16 +22,16 @@
                     @change="valueChanged"/>
       <div class="flex justify-between">
         <button
-          :disabled="isDisabled(formValues) < 1"
-          v-on:click="speichernUndWeiter(formValues)"
-          class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
-          <span class="text-2xl pl-1">Okay, weiter</span>
-        </button>
-        <button
           class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
           <router-link to="/schritt-1">
             zurück
           </router-link>
+        </button>
+        <button
+          :disabled="isDisabled(formValues) < 1"
+          v-on:click="speichernUndWeiter(formValues)"
+          class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
+          <span class="text-2xl pl-1">Okay, weiter</span>
         </button>
       </div>
     </section>

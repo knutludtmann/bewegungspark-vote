@@ -8,12 +8,8 @@ export default defineConfig({
         vue(),
         VitePWA({
             mode: 'development',
-            srcDir: 'src',
-            filename: 'sw.ts',
             base: '/',
-            strategies: 'injectManifest',
-            includeAssets: ['/favicon.svg'], // <== don't remove slash, for testing purposes
-            manifest: {
+            /*manifest: {
                 name: 'Bewegungspark Nordkirchen',
                 short_name: 'Bewegungspark',
                 theme_color: '#3ffd13',
@@ -32,10 +28,13 @@ export default defineConfig({
                         src: '/touch-icon-512x512.png', // <== don't remove slash, for testing purposes
                         sizes: '512x512',
                         type: 'image/png',
-                        purpose: 'any maskable',
+                        purpose: 'maskable',
                     },
                 ],
             },
+            workbox: {
+
+            }*/
         }),
     ],
 })

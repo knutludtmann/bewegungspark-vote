@@ -16,7 +16,7 @@ export default {
   components: {},
   data() {
     return {
-      transitionName: 'slide-left'
+      transitionName: 'slide-left',
     }
   },
   firestore: {
@@ -34,20 +34,31 @@ export default {
     }
   },
   mounted() {
+
     db.collection('Votes')
         .get()
         .then(querySnapshot => {
           const documents = querySnapshot.docs.map(doc => {
-            if (doc.data().currentVote.hasOwnProperty('timestamp')) {
-              console.log(doc.data());
+
+            if (doc.data().currentVote && doc.data().currentVote.hasOwnProperty('ip')) {
+              console.log('->', doc.data());
             }
             return doc.data()
           })
-          console.log(documents);
+        });
 
+    function json(url) {
+      return fetch(url).then(res => res.json());
+    }
 
-        })
+    let apiKey = '7ad3d600b4460ad46f4c5ebbc6e21fa1a4553a408fe57b96c8baeb0a';
+    json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+      console.log(data.ip);
+      // so many more properties
+    });
+
   }
+
 };
 </script>
 

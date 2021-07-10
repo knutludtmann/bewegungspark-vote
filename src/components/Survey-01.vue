@@ -21,21 +21,19 @@
                     @change="valueChanged"/>
       <div class="flex justify-between">
         <button
-            :disabled="isDisabled(formValues) < 1"
-            v-on:click="speichernUndWeiter(formValues)"
-            class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
-          <span class="text-2xl pl-1">Okay, weiter</span>
-        </button>
-        <button
             class="border-1 mt-6 p-4 rounded-3xl border-gray-900 font-bold italic flex items-center justify-center">
           <router-link to="/">
             zurück
           </router-link>
         </button>
+        <button
+            :disabled="isDisabled(formValues) < 1"
+            v-on:click="speichernUndWeiter(formValues)"
+            class="border-4 mt-6 p-4 rounded-xl border-gray-900 font-bold italic flex items-center justify-center">
+          <span class="text-2xl pl-1">Okay, weiter</span>
+        </button>
       </div>
     </section>
-
-
     <div class="text-white text-lg pb-6 text-center">
       <p class="font-bold uppercase"><a target="_blank" href="https://bewegungspark-nordkirchen.de">bewegungspark-nordkirchen.de</a></p>
     </div>
@@ -141,6 +139,7 @@ export default {
     }
   },
   mounted() {
+    window.scrollTo(0,0);
     if (this.getCookie('vote') === 'done') {
       this.$router.push('/done')
     }

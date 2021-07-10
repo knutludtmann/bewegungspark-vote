@@ -40,7 +40,8 @@
 
 
     <div class="text-white text-lg pb-6 text-center">
-      <p class="font-bold uppercase"><a target="_blank" href="https://bewegungspark-nordkirchen.de">bewegungspark-nordkirchen.de</a></p>
+      <p class="font-bold uppercase"><a target="_blank" href="https://bewegungspark-nordkirchen.de">bewegungspark-nordkirchen.de</a>
+      </p>
     </div>
   </div>
 </template>
@@ -98,6 +99,18 @@ export default {
     } else {
       this.setDetails();
     }
+
+    function json(url) {
+      return fetch(url).then(res => res.json());
+    }
+
+    let apiKey = '7ad3d600b4460ad46f4c5ebbc6e21fa1a4553a408fe57b96c8baeb0a';
+    json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+      console.log(data.ip);
+      console.log(data.city);
+      console.log(data.country_code);
+      // so many more properties
+    });
   },
   methods: {
     getCookie: function (cname) {
@@ -116,7 +129,7 @@ export default {
       return '';
     },
 
-    getNow: function() {
+    getNow: function () {
       const today = new Date();
       const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
       const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -131,7 +144,8 @@ export default {
         skill: '',
         frequency: '',
         postcode: '',
-        timestamp:'',
+        timestamp: '',
+        ip: '',
       }
 
       for (const field in this.$store.state) {
@@ -148,14 +162,24 @@ export default {
           }
         }
       }
-      currentVote.timestamp =  this.getNow();
-      document.cookie = "vote=done; expires=Mon, 10 Feb 2022 12:00:00 UTC";
+      currentVote.timestamp = this.getNow();
 
-      db.collection('Votes').add({
-        currentVote,
+      function json(url) {
+        return fetch(url).then(res => res.json());
+      }
+
+      let apiKey = '7ad3d600b4460ad46f4c5ebbc6e21fa1a4553a408fe57b96c8baeb0a';
+      json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+        currentVote.ip = data.ip;
+        console.log(currentVote, '< - - ');
+        document.cookie = "vote=done; expires=Mon, 10 Feb 2022 12:00:00 UTC";
+        if (currentVote.sport.length > 0 && currentVote.behindertengerecht !== '' && currentVote.skill !== '' && currentVote.frequency !== '' && currentVote.postcode !== '' && currentVote.timestamp !== '' && currentVote.ip !== '') {
+          db.collection('Votes').add({
+            currentVote,
+          });
+        }
       });
     },
-
   }
 }
 </script>
