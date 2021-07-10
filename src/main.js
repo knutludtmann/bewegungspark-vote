@@ -24,14 +24,30 @@ const store = createStore({
             skill: '',
             frequency: '',
             postcode: '',
+            currentClientIp:''
         }
     },
     getters: {
         entries: state => {
             return state;
+        },
+        getCurrentClientIp: state => {
+            return state.currentClientIp;
         }
     },
     mutations: {
+        setCurrentClientIp(state) {
+            function json(url) {
+                return fetch(url).then(res => res.json());
+            }
+
+            let apiKey = '7ad3d600b4460ad46f4c5ebbc6e21fa1a4553a408fe57b96c8baeb0a';
+            json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
+                // console.log('set ip to state:', data.ip);
+                state.currentClientIp = data.ip;
+            });
+
+        },
         setSport(state, type) {
             state.sport.push(state, type)
         },
@@ -62,7 +78,7 @@ const store = createStore({
         clearPostcode(state) {
             state.postcode = '';
         },
-    }
+    },
 })
 
 createApp(App)

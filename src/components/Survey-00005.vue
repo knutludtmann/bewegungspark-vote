@@ -3,15 +3,7 @@
   <div class="flex flex-col h-screen">
     <div class="max-w-7xl mx-auto p-2 text-xl bg-greenbright flex flex-row items-center justify-around w-full relative">
       <img alt="Vue logo" class="w-12 mx-auto block show-1" src="~/../assets/bewegung.png"/>
-      <router-link to="/" class="absolute right-4">
-        <button class="text-white p-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"/>
-          </svg>
-        </button>
-      </router-link>
+
     </div>
     <section class="p-8 m-3 bg-white rounded-lg">
       <h2 class="pb-2 text-2xl font-700 font-bold">
@@ -94,23 +86,20 @@ export default {
     };
   },
   mounted() {
-    if (this.getCookie('vote') === 'done') {
-      this.$router.push('/done')
-    } else {
-      this.setDetails();
-    }
-
-    function json(url) {
-      return fetch(url).then(res => res.json());
-    }
-
-    let apiKey = '7ad3d600b4460ad46f4c5ebbc6e21fa1a4553a408fe57b96c8baeb0a';
-    json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-      console.log(data.ip);
-      console.log(data.city);
-      console.log(data.country_code);
-      // so many more properties
-    });
+    window.scrollTo(0,0);
+    db.collection('Votes')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.docs.map(doc => {
+            if (doc.data().currentVote && doc.data().currentVote.hasOwnProperty('ip')) {
+              if (doc.data().currentVote['ip'] === this.$store.getters.getCurrentClientIp || this.getCookie('vote') === 'done') {
+                // console.log('IP hat bereits mitgemacht:', doc.data().currentVote['ip'] === this.$store.getters.getCurrentClientIp);
+                // console.log('Cookie vorhanden:', this.getCookie('vote') === 'done');
+                this.$router.push('/done')
+              }
+            }
+          })
+        });
   },
   methods: {
     getCookie: function (cname) {

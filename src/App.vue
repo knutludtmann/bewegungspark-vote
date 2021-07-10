@@ -33,30 +33,40 @@ export default {
       this.transitionName = toDepth < fromDepth ? 'slide-right-fade' : 'slide-left-fade'
     }
   },
+  methods: {
+    getCookie: function (cname) {
+      let name = cname + '=';
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return '';
+    },
+  },
   mounted() {
+
+    this.$store.commit('setCurrentClientIp');
 
     db.collection('Votes')
         .get()
         .then(querySnapshot => {
-          const documents = querySnapshot.docs.map(doc => {
-
+          querySnapshot.docs.map(doc => {
             if (doc.data().currentVote && doc.data().currentVote.hasOwnProperty('ip')) {
-              console.log('->', doc.data());
+              if (doc.data().currentVote['ip'] === this.$store.getters.getCurrentClientIp || this.getCookie('vote') === 'done') {
+                // console.log('IP hat bereits mitgemacht:', doc.data().currentVote['ip'] === this.$store.getters.getCurrentClientIp);
+                // console.log('Cookie vorhanden:', this.getCookie('vote') === 'done');
+                this.$router.push('/done')
+              }
             }
-            return doc.data()
           })
         });
-
-    function json(url) {
-      return fetch(url).then(res => res.json());
-    }
-
-    let apiKey = '7ad3d600b4460ad46f4c5ebbc6e21fa1a4553a408fe57b96c8baeb0a';
-    json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-      console.log(data.ip);
-      // so many more properties
-    });
-
   }
 
 };

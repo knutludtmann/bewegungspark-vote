@@ -51,6 +51,7 @@ import {
   TextField
 } from '@asigloo/vue-dynamic-forms';
 import {computed, reactive} from 'vue';
+import {db} from "../db";
 
 
 export default {
@@ -145,9 +146,18 @@ export default {
     }
   },
   mounted() {
-    if (this.getCookie('vote') === 'done') {
-      this.$router.push('/done')
-    }
+    window.scrollTo(0,0);
+    db.collection('Votes')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.docs.map(doc => {
+            if (doc.data().currentVote && doc.data().currentVote.hasOwnProperty('ip')) {
+              if (doc.data().currentVote['ip'] === this.$store.getters.getCurrentClientIp || this.getCookie('vote') === 'done') {
+                this.$router.push('/done')
+              }
+            }
+          })
+        });
   },
 }
 </script>

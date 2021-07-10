@@ -10,7 +10,7 @@
         <span class="font-light">Nordkirchen</span></h2>
 
     </div>
-    <section class="m-3 mt-2 mb-2 p-6 flex flex-col bg-white rounded-lg hyphens-auto">
+    <section class="m-3 mt-12 mb-12 p-6 flex flex-col bg-white rounded-lg hyphens-auto">
 
       <div>
         <h2 class="pb-2 text-2xl font-700 font-bold">
@@ -60,5 +60,8 @@ export default {
     ArrowRightIcon
   },
   methods: {},
+  mounted() {
+    window.scrollTo(0, 0);
+  }
 }
 </script>
